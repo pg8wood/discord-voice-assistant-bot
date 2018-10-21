@@ -1,31 +1,26 @@
-import discord 
-
-TOKEN = ""
-
-with open("token.txt") as token_file:
-        TOKEN = token_file.readline().strip()
+from threading import Thread
+import discord
 
 client = discord.Client()
-print("Connecting to Discord...")
 
 
-def process_online_users():
-    users_in_voice_count = 0
+async def get_online_users():
+    users_in_voice_channels = []
+
     for member in client.get_all_members():
         member_voice_channel = member.voice.voice_channel
 
         if member_voice_channel is not None:
-            print("%s is in %s" % (member.name, member.voice.voice_channel))
-            users_in_voice_count += 1
+            users_in_voice_channels.append("%s is in %s" % (member.name, member.voice.voice_channel))
 
-    if users_in_voice_count == 0:
-        print("Looks like all the voice channels are empty.")
+    return users_in_voice_channels
 
 
 @client.event
 async def on_ready():
     print("Success! %s is online!" % client.user.name)
-    process_online_users()
+    users = await get_online_users()
+    print(users)
 
 
 @client.event
@@ -35,10 +30,20 @@ async def on_message(message):
         return
 
     if message.content.startswith("!online"):
-       process_online_users()
+        users = await get_online_users()
+        await client.send_message(message.channel, users)
 
     elif message.content.startswith('!hello'):
         msg = 'Hello {0.author.mention}'.format(message)
         await client.send_message(message.channel, msg)
 
-client.run(TOKEN)
+
+def start_bot():
+    print("Connecting to Discord...")
+    with open("./secret/token.txt") as token_file:
+        TOKEN = token_file.readline().strip()
+        client.run(TOKEN)
+
+
+thread = Thread(target=start_bot, args=())
+thread.start()

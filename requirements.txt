@@ -1,5 +1,6 @@
-Flask==1.0.2
-requests==2.18.4
 dialogflow==0.4.0
-python-dotenv==0.8.2
+discord.py==0.16.12
 pusher==2.0.1
+python-dotenv==0.8.2
+requests==2.18.4
+Sanic==0.7.0

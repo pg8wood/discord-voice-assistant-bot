@@ -1,16 +1,19 @@
-from flask import Flask, request, jsonify, render_template
 import os
 import dialogflow
 import requests
 import json
 import pusher
+import bot
 
-app = Flask(__name__)
+from sanic import Sanic
+from sanic.response import json
+
+app = Sanic()
 
 @app.route('/')
-def index():
-        return render_template('index.html')
+async def test(request):
+    users = await bot.get_online_users()
+    return json({users[0]})
 
-# run Flask app
-if __name__ == "__main__":
-        app.run()
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8000)
