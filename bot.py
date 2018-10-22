@@ -5,15 +5,18 @@ client = discord.Client()
 
 
 async def get_online_users():
-    users_in_voice_channels = []
+    voice_channel_dict = {}
 
     for member in client.get_all_members():
-        member_voice_channel = member.voice.voice_channel
+        voice_channel = member.voice.voice_channel
 
-        if member_voice_channel is not None:
-            users_in_voice_channels.append("%s is in %s" % (member.name, member.voice.voice_channel))
+        if voice_channel is not None:
+            if voice_channel not in voice_channel_dict:
+                voice_channel_dict[voice_channel] = []
 
-    return users_in_voice_channels
+            voice_channel_dict[voice_channel].append(member.name)
+
+    return voice_channel_dict
 
 
 @client.event
