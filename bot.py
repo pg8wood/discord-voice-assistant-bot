@@ -28,7 +28,7 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    # Talking to yourself may be good for you, but not if you're a bot.
+    # Don't let the bot talk to itself... it might become self-aware.
     if message.author == client.user:
         return
 
@@ -44,8 +44,8 @@ async def on_message(message):
 def start_bot():
     print("Connecting to Discord...")
     with open("./secret/token.txt") as token_file:
-        TOKEN = token_file.readline().strip()
-        client.run(TOKEN)
+        token = token_file.readline().strip()
+        client.run(token)
 
 
 thread = Thread(target=start_bot, args=())
