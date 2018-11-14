@@ -13,7 +13,6 @@ Start your virtualenv with `source python-3.6-env/bin/activate`, then the Sanic 
 The bot won't do much as of yet. More to come as the bot is developed. Stay tuned. 
 
 ## Roadmap
-- Install script for ezpz installation
 - Include Dialogflow setup instructions in README
 - More bot features. Got an idea? Open an issue! 
 - Update to Python 3.7 once discord.py supports it
