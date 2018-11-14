@@ -1,8 +1,6 @@
 import os
 import dialogflow
-import requests
 import json
-import pusher
 import bot
 
 from sanic import Sanic
