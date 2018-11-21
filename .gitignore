@@ -1,5 +1,6 @@
 __pycache__/
 .env
+.idea/
 env/
 secret/
 python-3.6-env/

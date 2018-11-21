@@ -22,8 +22,6 @@ async def get_online_users():
 @client.event
 async def on_ready():
     print("Success! %s is online!" % client.user.name)
-    users = await get_online_users()
-    print(users)
 
 
 @client.event
@@ -48,5 +46,6 @@ def start_bot():
         client.run(token)
 
 
+# Run the bot on its own thread 
 thread = Thread(target=start_bot, args=())
 thread.start()
