@@ -1,13 +1,16 @@
 from threading import Thread
-import discord
 
-client = discord.Client()
+import discord
+from discord import ChannelType
+from discord.ext import commands
+
+bot = commands.Bot(command_prefix=".")
 
 
 async def get_online_users():
     voice_channel_dict = {}
 
-    for member in client.get_all_members():
+    for member in bot.get_all_members():
         voice_channel = member.voice.voice_channel
 
         if voice_channel is not None:
@@ -19,33 +22,41 @@ async def get_online_users():
     return voice_channel_dict
 
 
-@client.event
+@bot.event
 async def on_ready():
-    print("Success! %s is online!" % client.user.name)
+    print("Success! %s is online!" % bot.user.name)
 
 
-@client.event
-async def on_message(message):
-    # Don't let the bot talk to itself... it might become self-aware.
-    if message.author == client.user:
+@bot.command()
+async def ping():
+    await bot.say("yo yo yo")
+
+
+@bot.command(pass_context=True)
+async def play(ctx, url):
+    author = ctx.message.author
+    user_channel = author.voice_channel
+
+    if user_channel.type is not ChannelType.voice:
+        await bot.say("You must join a voice channel before using this command. I'm not listening to your "
+                      "shitty music alone.")
         return
 
-    if message.content.startswith("!online"):
-        users = await get_online_users()
-        await client.send_message(message.channel, users)
+    voice_channel = await bot.join_voice_channel(user_channel)
+    player = await voice_channel.create_ytdl_player(url)
 
-    elif message.content.startswith('!hello'):
-        msg = 'Hello {0.author.mention}'.format(message)
-        await client.send_message(message.channel, msg)
+    await bot.say("Now playing %s" % player.title)
+    player_thread = Thread(target=player.start(), args=())
+    player_thread.start()
 
 
 def start_bot():
     print("Connecting to Discord...")
     with open("./secret/token.txt") as token_file:
         token = token_file.readline().strip()
-        client.run(token)
+        bot.run(token)
 
 
-# Run the bot on its own thread 
+# Run the bot on its own thread
 thread = Thread(target=start_bot, args=())
 thread.start()
