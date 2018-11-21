@@ -32,22 +32,34 @@ async def ping():
     await bot.say("yo yo yo")
 
 
-@bot.command(pass_context=True)
-async def play(ctx, url):
-    author = ctx.message.author
-    user_channel = author.voice_channel
+class Music:
+    player = None
 
-    if user_channel.type is not ChannelType.voice:
-        await bot.say("You must join a voice channel before using this command. I'm not listening to your "
-                      "shitty music alone.")
-        return
+    @commands.command(pass_context=True)
+    async def play(self, ctx, url):
+        author = ctx.message.author
+        server = ctx.message.server
+        user_channel = author.voice_channel
 
-    voice_channel = await bot.join_voice_channel(user_channel)
-    player = await voice_channel.create_ytdl_player(url)
+        if user_channel is None or user_channel.type is not ChannelType.voice:
+            await bot.say("You must join a voice channel before using this command. I'm not listening to your "
+                          "shitty music alone.")
+            return
 
-    await bot.say("Now playing %s" % player.title)
-    player_thread = Thread(target=player.start(), args=())
-    player_thread.start()
+        voice_channel = bot.voice_client_in(server) if bot.is_voice_connected(server) else await bot.join_voice_channel(user_channel)
+
+        if self.player is None:
+            self.player = await voice_channel.create_ytdl_player(url)
+            await bot.say("Now playing %s" % self.player.title)
+            player_thread = Thread(target=self.player.start(), args=())
+            player_thread.start()
+        else:
+            await bot.say("Something's already playing. Hold up. I don't know how to queue music yet.")
+
+    @commands.command(pass_context=True)
+    async def stop(self):
+        await bot.say("Player stopped.")
+        self.player.stop()
 
 
 def start_bot():
@@ -56,6 +68,8 @@ def start_bot():
         token = token_file.readline().strip()
         bot.run(token)
 
+
+bot.add_cog(Music())
 
 # Run the bot on its own thread
 thread = Thread(target=start_bot, args=())
