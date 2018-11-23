@@ -4,7 +4,7 @@ import discord
 from discord import ChannelType
 from discord.ext import commands
 
-bot = commands.Bot(command_prefix=".")
+bot = commands.Bot(command_prefix=".", description="yo yo yo\n\nHere's what I know how to do:")
 
 
 async def get_online_users():
@@ -29,6 +29,7 @@ async def on_ready():
 
 @bot.command()
 async def ping():
+    """Ping me and see what happens ;)"""
     await bot.say("yo yo yo")
 
 
@@ -37,6 +38,7 @@ class Music:
 
     @commands.command(pass_context=True)
     async def play(self, ctx, url):
+        """<url> Play audio from YouTube"""
         author = ctx.message.author
         server = ctx.message.server
         user_channel = author.voice_channel
@@ -58,6 +60,7 @@ class Music:
 
     @commands.command(pass_context=True)
     async def stop(self):
+        """STOP THE MUSIC"""
         await bot.say("Player stopped.")
         self.player.stop()
 
