@@ -18,10 +18,10 @@ else
 fi
 
 pip install -r requirements.txt
-mkdir secret
+mkdir bot/secret
 
 # Discord setup
 echo -e "\nEnter your bot's Discord token: "
 read token
-echo $token > secret/token.txt
+echo $token > bot/secret/token.txt
 echo -e "\nSuccess! The bot has been installed."
