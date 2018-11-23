@@ -1,8 +1,8 @@
 from threading import Thread
 
-import discord
 from discord import ChannelType
 from discord.ext import commands
+from discord.voice_client import ProcessPlayer
 
 bot = commands.Bot(command_prefix=".", description="yo yo yo\n\nHere's what I know how to do:")
 
@@ -51,12 +51,39 @@ class Music:
         voice_channel = bot.voice_client_in(server) if bot.is_voice_connected(server) else await bot.join_voice_channel(user_channel)
 
         if self.player is None:
-            self.player = await voice_channel.create_ytdl_player(url)
+            # All ytdl options are available here: https://github.com/rg3/youtube-dl/blob/master/README.md
+            ytdl_options = {
+                "default_search": "auto",  # Search for video title if url is invalid
+                "format": "bestaudio/best",
+                "quiet": True
+            }
+
+            self.player = await voice_channel.create_ytdl_player(url, ytdl_options=ytdl_options)
+            self.player.volume = 0.05
             await bot.say("Now playing %s" % self.player.title)
             player_thread = Thread(target=self.player.start(), args=())
             player_thread.start()
         else:
             await bot.say("Something's already playing. Hold up. I don't know how to queue music yet.")
+
+    @commands.command(pass_context=True)
+    async def volume(self, ctx, volume):
+        """<0 - 200> Sets the volume of the bot. Changes volume for ALL users, so use this command with caution."""
+        try:
+            volume = int(volume)
+        except ValueError:
+            await(bot.say("Usage: %svolume <integer in range 0 - 200>. Changes volume for ALL users, so use this "
+                          "command with caution." % bot.command_prefix))
+
+        if volume < 0:
+            await(bot.say("What would negative volume even be?"))
+        elif volume > 200:
+            await(bot.say("IT'S TOO LOUD"))
+        elif isinstance(self.player, ProcessPlayer):
+            self.player.volume = volume / 100.0
+            await bot.add_reaction(ctx.message, '👍')
+        else:
+            await(bot.say("Nothing's playing right now. 💩"))
 
     @commands.command(pass_context=True)
     async def stop(self):
