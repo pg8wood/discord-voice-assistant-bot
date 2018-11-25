@@ -1,7 +1,5 @@
 from asyncio import Queue, Event
 
-import datetime
-
 from discord import ChannelType
 from discord.ext import commands
 from discord.voice_client import ProcessPlayer
@@ -22,11 +20,6 @@ class Music:
         self.advance_queue_event = Event()
         self.queue = Queue()
         self.playlist_task_loop = self.bot.loop.create_task(self.playlist_task())
-        # self.playlist_task_loop = None
-
-    # @property
-    # def audio_player(self):
-    #     return self.current_song.player()
 
     def set_next_song_ready(self):
         """
@@ -35,10 +28,10 @@ class Music:
         self.bot.loop.call_soon_threadsafe(self.advance_queue_event.set)
 
     async def playlist_task(self):
-        print("Started audio player task loop. Waiting on songs...")
         """
         Plays songs from the queue. Should be run as a coroutine as it is blocking
         """
+        print("Started audio player task loop. Waiting on songs...")
         while True:
             self.advance_queue_event.clear()
             self.current_song = await self.queue.get()
@@ -83,10 +76,12 @@ class Music:
 
     @commands.command(pass_context=True)
     async def np(self, ctx):
+        """Shorthand for nowplaying"""
         await self.now_playing()
 
     @commands.command(pass_context=True)
     async def nowplaying(self, ctx):
+        """Gets the currently-playing song"""
         await self.now_playing()
 
     async def now_playing(self):
@@ -107,7 +102,7 @@ class Music:
 
     @commands.command(pass_context=True)
     async def volume(self, ctx, volume):
-        """<0 - 200> Sets the volume of the bot. Changes volume for ALL users, so use this command with caution."""
+        """<0 - 200> Sets the volume of the bot. Changes volume for EVERYONE."""
         try:
             volume = int(volume)
         except ValueError:
