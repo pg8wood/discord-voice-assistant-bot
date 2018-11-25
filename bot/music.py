@@ -67,7 +67,6 @@ class Music:
         voice_channel = self.bot.voice_client_in(server) if self.bot.is_voice_connected(
             server) else await self.bot.join_voice_channel(user_channel)
 
-        # if self.current_song_player is None:
         # All ytdl options are available here: https://github.com/rg3/youtube-dl/blob/master/README.md
         ytdl_options = {
             "default_search": "auto",  # Search for video title if url is invalid
@@ -83,26 +82,43 @@ class Music:
         print("added %s to the queue" % new_song_player.title)
 
     @commands.command(pass_context=True)
+    async def skip(self, ctx):
+        """
+        Skips the current song
+        """
+        if not self.is_playing():
+            await self.bot.say("Nothing's playing right now. 💩")
+        else:
+            await self.bot.say("Skipped '%s'" % self.current_song.title)
+            self.current_song.stop()
+
+    @commands.command(pass_context=True)
     async def volume(self, ctx, volume):
         """<0 - 200> Sets the volume of the bot. Changes volume for ALL users, so use this command with caution."""
         try:
             volume = int(volume)
         except ValueError:
-            await(self.bot.say("Usage: %svolume <integer in range 0 - 200>. Changes volume for ALL users, so use this "
-                               "command with caution." % self.bot.command_prefix))
+            await self.bot.say("Usage: %svolume <integer in range 0 - 200>. Changes volume for ALL users, so use this "
+                               "command with caution." % self.bot.command_prefix)
 
         if volume < 0:
-            await(self.bot.say("What would negative volume even be?"))
+            await self.bot.say("What would negative volume even be?")
         elif volume > 200:
-            await(self.bot.say("IT'S TOO LOUD"))
-        elif isinstance(self.audio_player, ProcessPlayer):
-            self.audio_player.volume = volume / 100.0
-            await self.bot.add_reaction(ctx.message, '👍')
+            await self.bot.say("IT'S TOO LOUD")
+        elif isinstance(self.current_song, ProcessPlayer):
+            self.current_song.volume = volume / 100.0
         else:
-            await(self.bot.say("Nothing's playing right now. 💩"))
+            await self.bot.say("Nothing's playing right now. 💩")
 
     @commands.command(pass_context=True)
     async def stop(self):
         """STOP THE MUSIC"""
         await self.bot.say("Player stopped.")
-        self.audio_player.stop()
+
+        if not self.current_song.is_done:
+            self.current_song.stop()
+
+        try:
+            self.playlist_task.cancel()
+        except:
+            pass  # shameless
