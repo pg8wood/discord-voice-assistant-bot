@@ -82,12 +82,25 @@ class Music:
         await self.queue.put(new_song_player)
 
     @commands.command(pass_context=True)
+    async def np(self, ctx):
+        await self.now_playing()
+
+    @commands.command(pass_context=True)
+    async def nowplaying(self, ctx):
+        await self.now_playing()
+
+    async def now_playing(self):
+        """Gets the currently-playing song"""
+        now_playing_message = "Nothing is playing." if self.current_song is None else self.current_song.title
+        await self.bot.say(now_playing_message)
+
+    @commands.command(pass_context=True)
     async def skip(self, ctx):
         """
         Skips the current song
         """
         if not self.is_playing():
-            await self.bot.say("Nothing's playing right now. 💩")
+            await self.bot.say("Nothing's playing right now. ¯\_(ツ)_/¯")
         else:
             await self.bot.say("Skipped '%s'" % self.current_song.title)
             self.current_song.stop()
@@ -108,17 +121,30 @@ class Music:
         elif isinstance(self.current_song, ProcessPlayer):
             self.current_song.volume = volume / 100.0
         else:
-            await self.bot.say("Nothing's playing right now. 💩")
+            await self.bot.say("Nothing's playing right now. ¯\_(ツ)_/¯")
+
+    @commands.command(pass_context=True)
+    async def pause(self):
+        """Pause the current track"""
+        if self.is_playing():
+            self.current_song.pause()
+        else:
+            await self.bot.say("Nothing's playing right now. ¯\_(ツ)_/¯")
+
+    @commands.command(pass_context=True)
+    async def resume(self):
+        """Resume the current track"""
+        if self.is_playing():
+            self.current_song.resume()
+        else:
+            await self.bot.say("There's nothing to resume ¯\_(ツ)_/¯")
 
     @commands.command(pass_context=True)
     async def stop(self):
         """STOP THE MUSIC"""
-        await self.bot.say("Player stopped.")
-
-        if not self.current_song.is_done:
-            self.current_song.stop()
-
         try:
-            self.playlist_task.cancel()
+            self.current_song.stop()
+            self.current_song = None
+            await self.bot.say("Player stopped and queue emptied.")
         except:
-            pass  # shameless
+            await self.bot.say("I CAN'T STOP IT")
