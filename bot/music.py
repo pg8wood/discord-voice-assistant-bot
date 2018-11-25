@@ -1,11 +1,12 @@
-import asyncio
 from asyncio import Queue, Event
-from threading import Thread
+
+import datetime
 
 from discord import ChannelType
 from discord.ext import commands
 from discord.voice_client import ProcessPlayer
 
+import util
 
 class Music:
     """
@@ -31,7 +32,6 @@ class Music:
         """
         Tells the queue the next song is ready to be played by setting the advance queue event's internal flag
         """
-        print("next song is ready")
         self.bot.loop.call_soon_threadsafe(self.advance_queue_event.set)
 
     async def playlist_task(self):
@@ -70,16 +70,16 @@ class Music:
         # All ytdl options are available here: https://github.com/rg3/youtube-dl/blob/master/README.md
         ytdl_options = {
             "default_search": "auto",  # Search for video title if url is invalid
-            # "format": "bestaudio/best"
+            "format": "bestaudio/best",
             "quiet": True
         }
 
         new_song_player = await voice_channel.create_ytdl_player(url, ytdl_options=ytdl_options,
                                                                  after=self.set_next_song_ready)
         new_song_player.volume = 0.05
-        await self.bot.say("'%s' was added to the queue." % new_song_player.title)
+        duration = util.time_string(new_song_player.duration)
+        await self.bot.say("'%s' -- %s was added to the queue." % (new_song_player.title, duration))
         await self.queue.put(new_song_player)
-        print("added %s to the queue" % new_song_player.title)
 
     @commands.command(pass_context=True)
     async def skip(self, ctx):
