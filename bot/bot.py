@@ -30,6 +30,10 @@ async def on_ready():
 
 @bot.event
 async def on_message(message):
+    if message.author == bot.user:
+        # Don't let the bot talk to itself... it might become self-aware.
+        return
+
     message_string = message.content.lower()
 
     # Slowing down every command's processing for shitposting? You betcha.
