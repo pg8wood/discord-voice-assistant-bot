@@ -1,11 +1,9 @@
+from google_sheeets_client import GoogleSheetsClient
+from music import Music
+from discord.ext import commands
 from threading import Thread
 
-from discord.ext import commands
-
-from music import Music
-
 bot = commands.Bot(command_prefix=".", description="yo yo yo\n\nHere's what I know how to do:")
-bot.add_cog(Music(bot))
 
 
 async def get_online_users():
@@ -76,3 +74,5 @@ def start_bot():
 thread = Thread(target=start_bot, args=())
 thread.start()
 
+bot.add_cog(Music(bot))
+bot.add_cog(GoogleSheetsClient())

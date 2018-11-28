@@ -6,6 +6,7 @@ from discord.voice_client import ProcessPlayer
 
 import util
 
+
 class Music:
     """
     A simple music player. Supports YouTube links and search.
