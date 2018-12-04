@@ -28,8 +28,19 @@ async def on_ready():
 
 @bot.event
 async def on_message(message):
-    if message.author == bot.user:
+    author = message.author
+    channel = message.channel
+    server = channel.server
+
+    if author == bot.user:
         # Don't let the bot talk to itself... it might become self-aware.
+        return
+    elif not sheets_client.is_command_channel(text_channel=channel.name, server_id=server.id):
+        # Force users to post bot commands in the bot channel
+        command_channel_id = str(sheets_client.get_command_channel_id(server_id=server.id))
+        command_channel = server.get_channel(command_channel_id)
+
+        await bot.send_message(command_channel, author.mention + " post robot commands in this channel plz")
         return
 
     message_string = message.content.lower()
@@ -74,5 +85,5 @@ def start_bot():
 thread = Thread(target=start_bot, args=())
 thread.start()
 
+sheets_client = GoogleSheetsClient()
 bot.add_cog(Music(bot))
-bot.add_cog(GoogleSheetsClient())
