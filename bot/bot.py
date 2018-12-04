@@ -31,11 +31,12 @@ async def on_message(message):
     author = message.author
     channel = message.channel
     server = channel.server
+    message_string = message.content.lower()
 
     if author == bot.user:
         # Don't let the bot talk to itself... it might become self-aware.
         return
-    elif not sheets_client.is_command_channel(text_channel=channel.name, server_id=server.id):
+    elif message_string.startswith(bot.command_prefix) and not sheets_client.is_command_channel(text_channel=channel.name, server_id=server.id):
         # Force users to post bot commands in the bot channel
         command_channel_id = str(sheets_client.get_command_channel_id(server_id=server.id))
         command_channel = server.get_channel(command_channel_id)
@@ -44,18 +45,10 @@ async def on_message(message):
         await bot.delete_message(message)
         return
 
-    message_string = message.content.lower()
-
-    # Slowing down every command's processing for shitposting? You betcha.
-    # If the shitposting list gets longer, we'll do this on its own thread
-    if "fortnite" in message_string or "forknite" in message_string or "ree" in message_string:
-        await bot.send_message(message.channel, "REEEEEEEEEEEEEEEEEEEEEEE")
-    elif "nuclear" in message_string:
-        await bot.send_message(message.channel, "IT'S GONNA BLOW")
-    elif "penis" in message_string:
-        await bot.send_message(message.channel, "You disgust me.")
-    elif "country road" in message_string:
-        await bot.send_message(message.channel, "WEST VIRGINIA")
+    custom_response = sheets_client.get_custom_response(message_string) if not message_string.startswith(bot.command_prefix) else None
+    if custom_response is not None:
+        await bot.send_message(message.channel, custom_response)
+        return
 
     await bot.process_commands(message)
 
