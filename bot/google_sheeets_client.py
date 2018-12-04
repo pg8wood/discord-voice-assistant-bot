@@ -8,18 +8,18 @@ class GoogleSheetsClient:
     """
 
     def __init__(self):
+        print("Connecting to Google Sheets...")
+
         scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
         credentials = ServiceAccountCredentials.from_json_keyfile_name("./secret/google_sheets_secret.json", scope)
-        print("Connecting to Google Sheets...")
         client = gspread.authorize(credentials)
         self.sheet = client.open("Discord Assistant Bot").sheet1
         self.records = self.sheet.get_all_records()
 
-    def can_post_in_text_channel(self, text_channel):
-        print("text channel: " + str(text_channel))
+    def is_commands_channel(self, text_channel):
 
         for entry in self.records:
-            if text_channel == entry["allowed_channel_id"]:
+            if entry["command_channel_name"] == text_channel:
                 return True
         else:
             return False
