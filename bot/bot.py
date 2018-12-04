@@ -41,6 +41,7 @@ async def on_message(message):
         command_channel = server.get_channel(command_channel_id)
 
         await bot.send_message(command_channel, author.mention + " post robot commands in this channel plz")
+        await bot.delete_message(message)
         return
 
     message_string = message.content.lower()
