@@ -47,8 +47,14 @@ class Music:
         return self.current_song is not None and not self.current_song.is_done()
 
     @commands.command(pass_context=True)
-    async def play(self, ctx, url):
-        """<url> Play audio from YouTube"""
+    async def play(self, ctx, url=""):
+        """
+        Play audio from YouTube
+
+        usage:
+        .play <url> play url from YouTube
+        .play resume the current music player, if one exists
+        """
         author = ctx.message.author
         server = ctx.message.server
         user_channel = author.voice_channel
@@ -56,6 +62,10 @@ class Music:
         if user_channel is None or user_channel.type is not ChannelType.voice:
             await self.bot.say("You must join a voice channel before using this command. I'm not listening to your "
                                "shitty music alone.")
+            return
+
+        if url == "":
+            await self.resume.invoke(ctx)
             return
 
         voice_channel = self.bot.voice_client_in(server) if self.bot.is_voice_connected(
