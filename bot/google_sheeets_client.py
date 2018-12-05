@@ -4,7 +4,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 
 class GoogleSheetsClient:
     """
-    Gets data from Google Sheets. Specifically, the text channels that the bot is allowed to post in.
+    Gets data from Google Sheets. Specifically, the guild's command channels and the bot's custom responses.
     """
 
     def __init__(self):
