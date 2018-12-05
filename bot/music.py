@@ -1,5 +1,6 @@
 from asyncio import Queue, Event
 
+import discord
 from discord import ChannelType
 from discord.ext import commands
 from discord.voice_client import ProcessPlayer
@@ -41,6 +42,7 @@ class Music:
             # await self.bot.say("Now playing %s" % self.current_song.title)
 
             self.current_song.start()
+            await self.bot.change_presence(game=discord.Game(name=self.current_song.title))
             await self.advance_queue_event.wait()
 
     def is_playing(self):
@@ -152,5 +154,6 @@ class Music:
             self.current_song.stop()
             self.current_song = None
             await self.bot.say("Player stopped and queue emptied.")
+            await self.bot.change_presence(status=None, game=None)
         except:
             await self.bot.say("I CAN'T STOP IT")
