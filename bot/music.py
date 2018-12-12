@@ -6,6 +6,7 @@ from discord.ext import commands
 from discord.voice_client import ProcessPlayer
 
 import util
+import validators
 
 
 class Music:
@@ -68,6 +69,9 @@ class Music:
 
         if url == "":
             await self.resume.invoke(ctx)
+            return
+        elif not validators.url(url):
+            await self.bot.say("That doesn't look like a valid url...")
             return
 
         voice_channel = self.bot.voice_client_in(server) if self.bot.is_voice_connected(
