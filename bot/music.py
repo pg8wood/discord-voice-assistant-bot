@@ -86,7 +86,7 @@ class Music:
 
         new_song_player = await voice_channel.create_ytdl_player(url, ytdl_options=ytdl_options,
                                                                  after=self.set_next_song_ready)
-        new_song_player.volume = 0.05
+        new_song_player.volume = 0.50
         duration = util.time_string(new_song_player.duration)
         await self.bot.say("'%s' -- %s was added to the queue." % (new_song_player.title, duration))
         await self.queue.put(new_song_player)
