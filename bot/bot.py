@@ -52,6 +52,7 @@ async def on_message(message):
 
     await bot.process_commands(message)
 
+
 @bot.event
 async def on_command_error(error, ctx):
     await bot.say("Unhandled error! %s" % str(error))
@@ -63,7 +64,7 @@ async def ping():
     await bot.say("yo yo yo")
 
 
-@bot.command(pass_context=True)
+@bot.command(pass_context=True, aliases=["kill", "ded"])
 async def shutdown(ctx):
     """Killswitch. Use this if the bot gains sentience."""
 

@@ -91,17 +91,8 @@ class Music:
         await self.bot.say("'%s' -- %s was added to the queue." % (new_song_player.title, duration))
         await self.queue.put(new_song_player)
 
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True, aliases=["playing", "nowplaying"])
     async def np(self, ctx):
-        """Shorthand for nowplaying"""
-        await self.now_playing()
-
-    @commands.command(pass_context=True)
-    async def nowplaying(self, ctx):
-        """Gets the currently-playing song"""
-        await self.now_playing()
-
-    async def now_playing(self):
         """Gets the currently-playing song"""
         now_playing_message = "Nothing is playing." if self.current_song is None else self.current_song.title
         await self.bot.say(now_playing_message)
@@ -122,7 +113,7 @@ class Music:
                 self.current_song = None
                 await self.bot.change_presence(game=None)
 
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True, aliases=["vol"])
     async def volume(self, ctx, volume):
         """<0 - 200> Sets the volume of the bot. Changes volume for EVERYONE."""
         try:
