@@ -117,6 +117,11 @@ class Music:
             await self.bot.say("Skipped '%s'" % self.current_song.title)
             self.current_song.stop()
 
+            # Skipped the last song in the queue
+            if self.queue.qsize() == 0:
+                self.current_song = None
+                await self.bot.change_presence(game=None)
+
     @commands.command(pass_context=True)
     async def volume(self, ctx, volume):
         """<0 - 200> Sets the volume of the bot. Changes volume for EVERYONE."""
@@ -140,6 +145,7 @@ class Music:
         """Pause the current track"""
         if self.is_playing():
             self.current_song.pause()
+            await self.bot.change_presence(game=discord.Game(name="Paused - " + self.current_song.title))
         else:
             await self.bot.say("Nothing's playing right now. ¯\_(ツ)_/¯")
 
@@ -148,6 +154,7 @@ class Music:
         """Resume the current track"""
         if self.is_playing():
             self.current_song.resume()
+            await self.bot.change_presence(game=discord.Game(name=self.current_song.title))
         else:
             await self.bot.say("There's nothing to resume ¯\_(ツ)_/¯")
 
@@ -158,6 +165,6 @@ class Music:
             self.current_song.stop()
             self.current_song = None
             await self.bot.say("Player stopped and queue emptied.")
-            await self.bot.change_presence(status=None, game=None)
+            await self.bot.change_presence(game=None)
         except:
             await self.bot.say("I CAN'T STOP IT")
