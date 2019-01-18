@@ -8,7 +8,7 @@ A bot that hangs out in Discord and sometimes talks to Google Assistant.
 
 ## Usage 
 ### Google Assistant mode
-Start your virtualenv with `source python-3.6-env/bin/activate`, then the Sanic server with `python3 index.py`. This will run the bot at http://localhost:8000.
+Start your virtualenv with `source python-3.6-env/bin/activate`, then the Sanic server with `python3 bot/index.py`. This will run the bot at http://localhost:8000.
 
 ### Vanilla bot
 run `bot_service.sh` to run the Discord bot without any fancy Google Assistant functionality.
