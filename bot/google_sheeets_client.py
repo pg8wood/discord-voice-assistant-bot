@@ -27,7 +27,7 @@ class GoogleSheetsClient:
 
     def get_custom_response(self, text):
         for entry in self.custom_response_records:
-            trigger_phrases = entry["trigger_phrases"].split(",")
+            trigger_phrases = str(entry["trigger_phrases"]).split(",")
 
             if text in trigger_phrases:
                 return entry["response"]
