@@ -2,6 +2,8 @@ from google_sheeets_client import GoogleSheetsClient
 from music import Music
 from discord.ext import commands
 from threading import Thread
+import os
+import signal
 
 bot = commands.Bot(command_prefix=".", description="yo yo yo\n\nHere's what I know how to do:")
 
@@ -53,25 +55,27 @@ async def on_message(message):
     await bot.process_commands(message)
 
 
-@bot.event
-async def on_command_error(error, ctx):
-    await bot.say("Unhandled error! %s" % str(error))
-
-
 @bot.command()
 async def ping():
     """Ping me and see what happens ;)"""
     await bot.say("yo yo yo")
 
 
-@bot.command(pass_context=True, aliases=["kill", "ded"])
+@bot.command(pass_context=True, aliases=["kill", "ded", "die"])
 async def shutdown(ctx):
-    """Killswitch. Use this if the bot gains sentience."""
+    """Killswitch. Use this if the bot gains sentience. You CANNOT restart the bot after using this command."""
 
     await bot.send_message(ctx.message.channel, "I'll remember this, " + ctx.message.author.mention)
     print("%s killed the bot" % ctx.message.author.name)
     exit(0)
 
+@bot.command(pass_context=True, aliases=["reboot", "reload"])
+async def restart(ctx):
+    """Restarts the bot."""
+
+    await bot.send_message(ctx.message.channel, "https://i.ytimg.com/vi/Zxo0V6x3GBE/maxresdefault.jpg") # We'll be right back
+    print("%s restarted the bot" % ctx.message.author.name)
+    os.kill(os.getpid(), signal.SIGTERM)
 
 def start_bot():
     print("Connecting to Discord...")
