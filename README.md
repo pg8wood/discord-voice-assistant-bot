@@ -7,12 +7,14 @@ A bot that hangs out in Discord and sometimes talks to Google Assistant.
 - Clone the repo, `cd` to the project directory, and run the installer script `./install.sh`
 
 ## Usage 
+### Google Assistant mode
 Start your virtualenv with `source python-3.6-env/bin/activate`, then the Sanic server with `python3 index.py`. This will run the bot at http://localhost:8000.
 
+### Vanilla bot
+run `bot_service.sh` to run the Discord bot without any fancy Google Assistant functionality.
 
 The bot won't do much as of yet. More to come as the bot is developed. Stay tuned. 
 
 ## Roadmap
 - Include Dialogflow setup instructions in README
 - More bot features. Got an idea? Open an issue! 
-- Update to Python 3.7 once discord.py supports it
