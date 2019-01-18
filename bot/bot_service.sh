@@ -2,7 +2,7 @@
 # Run the bot and restart if it crashes
 while true
 do
-	python3 bot.py
+	python3 index.py
 	exit_code=$?
 
 	if [ $exit_code -ne 0 ] 
