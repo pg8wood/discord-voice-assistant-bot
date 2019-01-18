@@ -58,8 +58,14 @@ class Music:
         .play <url> play url from YouTube
         .play resume the current music player, if one exists
         """
-        author = ctx.message.author
-        server = ctx.message.server
+        await self.play_track(ctx.message, url)
+
+    async def play_track(self, message, url):
+        """ 
+        Helper function to allow play functionality to be invoked internally
+        """
+        author = message.author
+        server = message.server
         user_channel = author.voice_channel
 
         if user_channel is None or user_channel.type is not ChannelType.voice:
@@ -71,7 +77,7 @@ class Music:
             await self.resume.invoke(ctx)
             return
         elif not validators.url(url):
-            await self.bot.say("That doesn't look like a valid url...")
+            await bot.send_message(message.channel, "That doesn't look like a valid url...")
             return
 
         voice_channel = self.bot.voice_client_in(server) if self.bot.is_voice_connected(
@@ -88,7 +94,7 @@ class Music:
                                                                  after=self.set_next_song_ready)
         new_song_player.volume = 0.50
         duration = util.time_string(new_song_player.duration)
-        await self.bot.say("'%s' -- %s was added to the queue." % (new_song_player.title, duration))
+        await self.bot.send_message(message.channel, "'%s' -- %s was added to the queue." % (new_song_player.title, duration))
         await self.queue.put(new_song_player)
 
     @commands.command(pass_context=True, aliases=["playing", "nowplaying"])

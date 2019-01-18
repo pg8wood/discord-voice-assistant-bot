@@ -1,6 +1,7 @@
 from google_sheeets_client import GoogleSheetsClient
 from music import Music
 from discord.ext import commands
+import discord
 from threading import Thread
 import os
 import signal
@@ -48,8 +49,13 @@ async def on_message(message):
         return
 
     custom_response = sheets_client.get_custom_response(message_string) if not message_string.startswith(bot.command_prefix) else None
+
+    # Process custom responses
     if custom_response is not None:
-        await bot.send_message(message.channel, custom_response)
+        if "youtube" in custom_response: # ♫ Audio response! 
+            await music_client.play_track(message, custom_response)
+        else:
+            await bot.send_message(message.channel, custom_response)
         return
 
     await bot.process_commands(message)
@@ -89,4 +95,5 @@ thread = Thread(target=start_bot, args=())
 thread.start()
 
 sheets_client = GoogleSheetsClient()
-bot.add_cog(Music(bot))
+music_client = Music(bot)
+bot.add_cog(music_client)
