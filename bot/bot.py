@@ -1,7 +1,6 @@
 from google_sheeets_client import GoogleSheetsClient
 from music import Music
 from discord.ext import commands
-import discord
 from threading import Thread
 import os
 import signal
@@ -75,6 +74,7 @@ async def shutdown(ctx):
     print("%s killed the bot" % ctx.message.author.name)
     exit(0)
 
+
 @bot.command(pass_context=True, aliases=["reboot", "reload"])
 async def restart(ctx):
     """Restarts the bot."""
@@ -82,6 +82,7 @@ async def restart(ctx):
     await bot.send_message(ctx.message.channel, "https://i.ytimg.com/vi/Zxo0V6x3GBE/maxresdefault.jpg") # We'll be right back
     print("%s restarted the bot" % ctx.message.author.name)
     os.kill(os.getpid(), signal.SIGTERM)
+
 
 def start_bot():
     print("Connecting to Discord...")
