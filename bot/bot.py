@@ -52,8 +52,8 @@ async def on_message(message):
 
     # Process custom responses
     if custom_response is not None:
-        if "youtube" in custom_response: # ♫ Audio response! 
-            await music_client.play_track(message, custom_response)
+        if "youtube" in custom_response:  # ♫ Audio response!
+            await music_client.audio_response(message, custom_response)
         else:
             await bot.send_message(message.channel, custom_response)
         return

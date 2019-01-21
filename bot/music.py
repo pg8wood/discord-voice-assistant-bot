@@ -60,7 +60,14 @@ class Music:
         """
         await self.play_track(ctx.message, url)
 
-    async def play_track(self, message, url):
+    async def audio_response(self, message, url):
+        """
+        Plays an audio track as an audio response to a message if no tracks are playing
+        """
+        if not (self.is_playing() and self.queue.qsize() == 0):
+            await self.play_track(message, url, False)
+
+    async def play_track(self, message, url, announce=True):
         """ 
         Helper function to allow play functionality to be invoked internally
         """
@@ -94,8 +101,10 @@ class Music:
                                                                  after=self.set_next_song_ready)
         new_song_player.volume = 0.50
         duration = util.time_string(new_song_player.duration)
-        await self.bot.send_message(message.channel, "'%s' -- %s was added to the queue." % (new_song_player.title, duration))
         await self.queue.put(new_song_player)
+
+        if announce:
+            await self.bot.send_message(message.channel, "'%s' -- %s was added to the queue." % (new_song_player.title, duration))
 
     @commands.command(pass_context=True, aliases=["playing", "nowplaying"])
     async def np(self, ctx):
