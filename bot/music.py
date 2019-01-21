@@ -11,7 +11,8 @@ import validators
 
 class Music:
     """
-    A simple music player. Supports YouTube links and search.
+    A simple music player. Supports audio links like YouTube and SoundCloud.
+    Supports a single Discord guild at a time.
 
     Attributes:
         bot (discord.ext.commands.Bot) the bot that will play all this fancy music
@@ -19,6 +20,7 @@ class Music:
 
     def __init__(self, bot):
         self.bot = bot
+        self.voice_channel = self.bot.voice_clients[0] if len(self.bot.voice_clients) > 0 else None
         self.current_song = None
         self.advance_queue_event = Event()
         self.queue = Queue()
@@ -37,6 +39,10 @@ class Music:
         print("Started audio player task loop. Waiting on songs...")
         while True:
             self.advance_queue_event.clear()
+
+            if self.queue.qsize() == 0 and self.voice_channel is not None:
+                await self.voice_channel.disconnect()
+
             self.current_song = await self.queue.get()
 
             # TODO figure out why this line causes a hang
@@ -58,16 +64,16 @@ class Music:
         .play <url> play url from YouTube
         .play resume the current music player, if one exists
         """
-        await self.play_track(ctx.message, url)
+        await self.queue_track(ctx.message, url)
 
     async def audio_response(self, message, url):
         """
         Plays an audio track as an audio response to a message if no tracks are playing
         """
         if not (self.is_playing() and self.queue.qsize() == 0):
-            await self.play_track(message, url, False)
+            await self.queue_track(message, url, False)
 
-    async def play_track(self, message, url, announce=True):
+    async def queue_track(self, message, url, announce=True):
         """ 
         Helper function to allow play functionality to be invoked internally
         """
@@ -84,10 +90,10 @@ class Music:
             await self.resume.invoke(ctx)
             return
         elif not validators.url(url):
-            await bot.send_message(message.channel, "That doesn't look like a valid url...")
+            await self.bot.send_message(message.channel, "That doesn't look like a valid url...")
             return
 
-        voice_channel = self.bot.voice_client_in(server) if self.bot.is_voice_connected(
+        self.voice_channel = self.bot.voice_client_in(server) if self.bot.is_voice_connected(
             server) else await self.bot.join_voice_channel(user_channel)
 
         # All ytdl options are available here: https://github.com/rg3/youtube-dl/blob/master/README.md
@@ -97,14 +103,15 @@ class Music:
             "quiet": True
         }
 
-        new_song_player = await voice_channel.create_ytdl_player(url, ytdl_options=ytdl_options,
-                                                                 after=self.set_next_song_ready)
+        new_song_player = await self.voice_channel.create_ytdl_player(url, ytdl_options=ytdl_options,
+                                                                      after=self.set_next_song_ready)
         new_song_player.volume = 0.50
         duration = util.time_string(new_song_player.duration)
         await self.queue.put(new_song_player)
 
         if announce:
-            await self.bot.send_message(message.channel, "'%s' -- %s was added to the queue." % (new_song_player.title, duration))
+            await self.bot.send_message(message.channel,
+                                        "'%s' -- %s was added to the queue." % (new_song_player.title, duration))
 
     @commands.command(pass_context=True, aliases=["playing", "nowplaying"])
     async def np(self, ctx):
