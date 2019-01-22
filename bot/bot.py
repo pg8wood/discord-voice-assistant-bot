@@ -71,7 +71,7 @@ async def ping():
 
 @bot.command(pass_context=True, aliases=["kill", "ded", "die"])
 async def shutdown(ctx):
-    """Killswitch. Use this if the bot gains sentience. You CANNOT restart the bot after using this command."""
+    """Kill switch. Use this if the bot gains sentience. You CANNOT restart the bot after using this command."""
 
     await bot.send_message(ctx.message.channel, "I'll remember this, " + ctx.message.author.mention)
     print("%s killed the bot" % ctx.message.author.name)
@@ -82,12 +82,12 @@ async def shutdown(ctx):
 async def restart(ctx):
     """Restarts the bot."""
 
-    await bot.send_message(ctx.message.channel, "https://i.ytimg.com/vi/Zxo0V6x3GBE/maxresdefault.jpg") # We'll be right back
+    await bot.send_message(ctx.message.channel, "https://i.ytimg.com/vi/Zxo0V6x3GBE/maxresdefault.jpg")  # We'll be right back
     print("%s restarted the bot" % ctx.message.author.name)
     os.kill(os.getpid(), signal.SIGTERM)
 
 
-# Dialogflow and G Suite fulfillment functions
+# Dialogflow G Suite fulfillment functions
 
 async def get_online_users():
     voice_channel_dict = {}
