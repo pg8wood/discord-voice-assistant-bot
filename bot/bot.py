@@ -25,6 +25,8 @@ thread = Thread(target=start_bot, args=())
 thread.start()
 
 
+# discord.py commands and events
+
 @bot.event
 async def on_ready():
     print("Success! %s is online!" % bot.user.name)
