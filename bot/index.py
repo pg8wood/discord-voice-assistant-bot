@@ -39,6 +39,10 @@ async def get_discord_voice_channel_status(self):
 
     return response.json(reply)
 
+@app.route('on_gspread_edit', methods=['GET'])
+async def on_gspread_edit(self):
+    return response.json("<html></html>")
+
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=8000)
