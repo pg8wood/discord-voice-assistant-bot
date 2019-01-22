@@ -7,20 +7,23 @@ import signal
 
 bot = commands.Bot(command_prefix=".", description="yo yo yo\n\nHere's what I know how to do:")
 
+# Configure cogs
+sheets_client = GoogleSheetsClient()
+music_client = Music(bot)
+bot.add_cog(music_client)
 
-async def get_online_users():
-    voice_channel_dict = {}
 
-    for member in bot.get_all_members():
-        voice_channel = member.voice.voice_channel
+def start_bot():
+    print("Connecting to Discord...")
+    with open("./secret/token.txt") as token_file:
+        token = token_file.readline().strip()
+        bot.run(token)
 
-        if voice_channel is not None:
-            if voice_channel not in voice_channel_dict:
-                voice_channel_dict[voice_channel] = []
 
-            voice_channel_dict[voice_channel].append(member.name)
-
-    return voice_channel_dict
+if __name__ == "__main__":
+    # Run the bot on its own thread
+    thread = Thread(target=start_bot, args=())
+    thread.start()
 
 
 @bot.event
@@ -84,17 +87,18 @@ async def restart(ctx):
     os.kill(os.getpid(), signal.SIGTERM)
 
 
-def start_bot():
-    print("Connecting to Discord...")
-    with open("./secret/token.txt") as token_file:
-        token = token_file.readline().strip()
-        bot.run(token)
+# Dialogflow and G Suite fulfillment functions
 
+async def get_online_users():
+    voice_channel_dict = {}
 
-# Run the bot on its own thread
-thread = Thread(target=start_bot, args=())
-thread.start()
+    for member in bot.get_all_members():
+        voice_channel = member.voice.voice_channel
 
-sheets_client = GoogleSheetsClient()
-music_client = Music(bot)
-bot.add_cog(music_client)
+        if voice_channel is not None:
+            if voice_channel not in voice_channel_dict:
+                voice_channel_dict[voice_channel] = []
+
+            voice_channel_dict[voice_channel].append(member.name)
+
+    return voice_channel_dict
