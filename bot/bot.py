@@ -20,10 +20,9 @@ def start_bot():
         bot.run(token)
 
 
-if __name__ == "__main__":
-    # Run the bot on its own thread
-    thread = Thread(target=start_bot, args=())
-    thread.start()
+# Run the bot on its own thread
+thread = Thread(target=start_bot, args=())
+thread.start()
 
 
 @bot.event

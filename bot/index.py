@@ -42,7 +42,7 @@ async def get_discord_voice_channel_status(self):
 
 @app.route('on_gspread_edit', methods=['GET'])
 async def on_gspread_edit(self):
-    sheets_client.refresh_records()
+    bot.sheets_client.refresh_records()
     return response.html('<p>You found the Google Sheets fulfillment API!</p>')
 
 
