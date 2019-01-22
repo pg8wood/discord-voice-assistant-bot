@@ -41,6 +41,7 @@ class Music:
             self.advance_queue_event.clear()
 
             if self.queue.qsize() == 0 and self.voice_channel is not None:
+                await self.bot.change_presence(game=None)
                 await self.voice_channel.disconnect()
 
             self.current_song = await self.queue.get()
