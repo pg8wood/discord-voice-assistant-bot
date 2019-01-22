@@ -14,7 +14,7 @@ class GoogleSheetsClient:
         credentials = ServiceAccountCredentials.from_json_keyfile_name("./secret/google_sheets_secret.json", scope)
         client = gspread.authorize(credentials)
         master_sheet = client.open("Discord Assistant Bot")
-        command_channel_sheet = master_sheet.sheet1
+        command_channel_sheet = master_sheet.worksheet("Permissions")
         custom_response_sheet = master_sheet.worksheet("Custom Responses")
 
         self.command_channel_records = command_channel_sheet.get_all_records()
