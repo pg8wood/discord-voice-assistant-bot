@@ -1,6 +1,6 @@
 # Discord Google Assistant Bot
 
-A bot that hangs out in Discord and sometimes talks to Google Assistant. 
+> A bot that hangs out in Discord and sometimes talks to Google Assistant. 
 
 ## Features
 #### Google Assistant
