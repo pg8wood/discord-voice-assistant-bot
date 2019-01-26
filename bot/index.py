@@ -1,11 +1,15 @@
-import os
-import json
 import bot
+import json
+import os
+import ssl
 
 from sanic import Sanic
 from sanic import response
 
 app = Sanic()
+
+context = ssl.create_default_context(purpose=ssl.Purpose.CLIENT_AUTH)
+context.load_cert_chain("/etc/letsencrypt/live/li1294-116.members.linode.com/fullchain.pem", keyfile="/etc/letsencrypt/live/li1294-116.members.linode.com/privkey.pem")
 
 
 @app.route('/')
@@ -47,4 +51,4 @@ async def on_gspread_edit(self):
 
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=8000)
+    app.run(host='0.0.0.0', port=8000, ssl=context)
