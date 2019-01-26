@@ -9,3 +9,4 @@ oauth
 python-dotenv==0.8.2
 Sanic==0.7.0
 youtube_dl
+gspread
