@@ -17,6 +17,7 @@ else
     exit 1
 fi
 
+source ../python-3.6-env/bin/activate
 pip install -r requirements.txt
 mkdir bot/secret
 
