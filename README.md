@@ -4,12 +4,13 @@
 <br />
 <br />
 <p align="center">
-	<img src="https://discordapp.com/assets/f8389ca1a741a115313bede9ac02e2c0.svg" style="width: 75px" />
-	<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Heart_coraz%C3%B3n.svg/1200px-Heart_coraz%C3%B3n.svg.png" style="width: 35px; padding: 20px 20px" />
-	<img src="https://upload.wikimedia.org/wikipedia/commons/5/5a/Google_Assistant_logo.png" style="width: 75px" />
+	<img src="https://discordapp.com/assets/f8389ca1a741a115313bede9ac02e2c0.svg" width=75px /> 
+	<img src="https://ak3.picdn.net/shutterstock/videos/15154723/thumb/9.jpg" width=125px/>
+	<img src="https://upload.wikimedia.org/wikipedia/commons/5/5a/Google_Assistant_logo.png" width=75px/>
 </p>
 
 <br />
+
 ## Features
 ### Bot
 - Hangs out in the voice chat, plays music from YouTube, SoundCloud, etc. through [youtube-dl](https://github.com/rg3/youtube-dl/commit/f7560859a3e25ccaa74123428d42f821299a2bed).
