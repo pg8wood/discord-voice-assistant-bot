@@ -36,7 +36,7 @@ If you want to use Google Assistant features, [follow the Dialogflow setup instr
 ### Custom Bot Responses
 The bot uses Google Sheets as a shared database of custom responses. This Sheet can be edited on-the-fly to setup custom bot text or audio responses to text typed in the Discord channels. 
 
-Create a new Sheet and configure a service account for the but [following this tutorial](https://youtu.be/vISRn5qFrkM). If you wish, share the link with your guild's members to allow them to add their own flavor to the bot. 
+Create a new Sheet and configure a service account for the bot [following this tutorial](https://youtu.be/vISRn5qFrkM). If you wish, share the link with your guild's members to allow them to add their own flavor to the bot. 
 
 <br />
 
