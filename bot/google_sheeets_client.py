@@ -35,8 +35,8 @@ class GoogleSheetsClient:
         for entry in self.custom_response_records:
             trigger_phrases = str(entry["trigger_phrases"]).split(', ')
 
-            for word in text.split(" "):
-                if word in trigger_phrases:
+            for phrase in trigger_phrases:
+                if phrase in text:
                     return entry["response"]
 
     def is_command_channel(self, text_channel, server_id):
