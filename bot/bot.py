@@ -55,9 +55,17 @@ async def on_message(message):
 
     # Process custom responses
     if custom_response is not None:
-        if "youtube" in custom_response:  # ♫ Audio response!
-            await music_client.audio_response(message, custom_response)
-        else:
+        """
+        Unfortunately, yt_dl doesn't provide a mechanism to discern which services are supported shy of "just trying it 
+        out" and catching errors (from their docs). Instead, we'll limit which media sites are supported here to avoid 
+        catching errors frequently as control flow since this is both slow and an anti-pattern.
+        """
+        supported_audio_sites = ("youtube", "soundcloud")
+        for site in supported_audio_sites:
+            if site in custom_response:  # ♫ Audio response!
+                await music_client.audio_response(message, custom_response)
+                return
+        else:  # Textual audio response
             await bot.send_message(message.channel, custom_response)
         return
 
