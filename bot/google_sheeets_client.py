@@ -9,7 +9,10 @@ class GoogleSheetsClient:
 
     def __init__(self):
         print("Connecting to Google Sheets...")
+        self.refresh_records()
 
+
+    def refresh_records(self):
         scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
         credentials = ServiceAccountCredentials.from_json_keyfile_name("./secret/google_sheets_secret.json", scope)
         client = gspread.authorize(credentials)
@@ -20,9 +23,6 @@ class GoogleSheetsClient:
         self.command_channel_records = None
         self.custom_response_records = None
 
-        self.refresh_records()
-
-    def refresh_records(self):
         self.command_channel_records = self.command_channel_sheet.get_all_records()
         self.custom_response_records = self.custom_response_sheet.get_all_records()
 
