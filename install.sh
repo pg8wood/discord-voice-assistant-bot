@@ -1,16 +1,15 @@
 #!/bin/bash
 
-python_version="3.6"
-python_path="/usr/local/bin/python$python_version"
-
 # Find Python install location
-if [ ! -f $python_path ]; then
-    echo "Python $python_version not found. Enter the path to your Python $python_version install."
-    read python_path
+if ! command -v python3; then
+    echo "Python 3 not found."
+    exit 1
 fi
 
+pip3 install virtualenv
+
 # Set up virtual environment
-if virtualenv --python=$python_path python-3.6-env; then
+if virtualenv --python=python3 python-3-env; then
     echo -e "\nVirtual environment configured! Installing requirements..."
 else
     echo -n "Installing virtual environment failed. You must have Python $python_version installed on your system."
