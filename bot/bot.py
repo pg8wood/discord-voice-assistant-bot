@@ -1,13 +1,20 @@
 from google_sheeets_client import GoogleSheetsClient
+from google_vision_client import GoogleVisionClient
 from music import Music
 from discord.ext import commands
 from threading import Thread
 import os
 import signal
+import sys
 
 bot = commands.Bot(command_prefix=".", description="yo yo yo\n\nHere's what I know how to do:")
 
-# Configure cogs
+vision_client = None
+
+# TODO: Make Google Sheets optional by using command-line argument
+if "vision" in sys.argv:
+    vision_client = GoogleVisionClient()
+
 sheets_client = GoogleSheetsClient()
 music_client = Music(bot)
 bot.add_cog(music_client)
