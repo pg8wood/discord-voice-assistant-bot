@@ -11,6 +11,9 @@
 
 <br />
 
+## Credit
+- Some of the code in bot/bot.py was taken from [discord.py](https://github.com/Rapptz/discord.py), as some modifications to the default help message required that the default methods be overridden, and as the original code was quite close to what was required already it made sense to copy said code and modify it as necessary in the overridden methods.
+
 ## Features
 ### Bot
 - Hangs out in the voice chat, plays music from YouTube, SoundCloud, etc. through [youtube-dl](https://github.com/rg3/youtube-dl/commit/f7560859a3e25ccaa74123428d42f821299a2bed).
