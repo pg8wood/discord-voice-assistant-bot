@@ -6,6 +6,8 @@ from threading import Thread
 import os
 import signal
 import sys
+import requests
+# TODO make separate image downloader
 
 bot = commands.Bot(command_prefix=".", description="yo yo yo\n\nHere's what I know how to do:")
 
@@ -13,6 +15,7 @@ vision_client = None
 
 # TODO: Make Google Sheets optional by using command-line argument
 if "vision" in sys.argv:
+    print("Connecting to Google Vision...")
     vision_client = GoogleVisionClient()
 
 sheets_client = GoogleSheetsClient()
@@ -39,12 +42,41 @@ async def on_ready():
     print("Success! %s is online!" % bot.user.name)
 
 
+async def process_attachments(channel, attachments):
+    print("process attachments")
+    if attachments is None or vision_client is None or len(attachments) < 1:
+        return
+
+    print("looking at attachments")
+
+    image_url = attachments[0]["url"]
+    print("url: '%s'" % image_url)
+
+    #TODO try just using the url
+    f = open('discord-recent-attachment.jpg', 'wb')
+    f.write(requests.get(image_url).content)
+    f.close()
+
+    is_bad = vision_client.detect_safe_search('./discord-recent-attachment.jpg')
+    print(is_bad)
+
+    if is_bad:
+        await bot.send_message(channel, "Unsafe image detected!")
+        return
+
 @bot.event
 async def on_message(message):
     author = message.author
     channel = message.channel
     server = channel.server
     message_string = message.content.lower()
+
+
+    # TODO: DON'T BLOCK ON THIS! IT'LL MAKE THE WHOLE BOT SLOW!
+    attachments_response = await process_attachments(channel, message.attachments)
+    if attachments_response is not None:
+        # await bot.send_message(channel, attachments_response)
+        return
 
     if author == bot.user:
         # Don't let the bot talk to itself... it might become self-aware.
@@ -77,7 +109,6 @@ async def on_message(message):
         return
 
     await bot.process_commands(message)
-
 
 @bot.command()
 async def ping():

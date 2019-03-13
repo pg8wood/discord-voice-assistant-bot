@@ -38,11 +38,16 @@ The bot uses Google Sheets as a shared database of custom responses. This Sheet 
 
 Create a new Sheet and configure a service account for the bot [following this tutorial](https://youtu.be/vISRn5qFrkM). If you wish, share the link with your guild's members to allow them to add their own flavor to the bot. 
 
+### Google Vision
+The bot can analyze images using the Google Cloud Vision library. 
+
+Follow the [Google Cloud Vision Python setup guide](https://cloud.google.com/vision/docs/libraries#client-libraries-install-python) 
+
 <br />
 
 ## Usage 
 
-### Vanilla bot
+### Regular bot
 Run `bot/bot_service.sh` to run the Discord bot without any fancy Google Assistant functionality.
 
 ### Google Assistant mode
@@ -51,6 +56,9 @@ Run the Sanic server with `python3 bot/index.py`. This will run the web server a
 If you're hosting the bot elsewhere, run the server the way you're used to. You may need to edit the configuration in `index.py`. 
 
 Type `<command_prefix> help` to see what the bot can do!
+
+### Google Vision
+Run the bot with the `vision` argument. 
 
 
 ## Roadmap
