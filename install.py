@@ -33,14 +33,14 @@ def install():
 		
 	else:
 		##TODO: add Mac support
-		print("MacOS not yet supported! Exiting installer...")
+		print("MacOS not yet supported! Please run install.sh instead.")
 		sys.exit(2)
 	
 	print("Activating venv...")
 	os.startfile(venv_directory)
 	
 	print("Installing dependencies...")
-	installDeps()
+	install_deps()
 	
 	print("Making directory for Discord token...")
 	if(os.path.isdir(token_dir_path)):
@@ -49,7 +49,7 @@ def install():
 		os.mkdir(token_dir_path)
 		
 	if(os.path.isfile(token_file_path)):
-		overwrite_token = input("Token file already exists! Would you like to overwrite it? (Y/N): ")
+		overwrite_token = input("Token file already exists! Would you like to overwrite it? (y/N): ")
 		
 		if(overwrite_token.lower() == "y"):
 			token = input("Enter your bot's Discord token: ")
@@ -69,7 +69,7 @@ def install():
 	print("Success! The bot has been installed.")
 	
 	
-def installDeps():
+def install_deps():
 	with open("requirements.txt", "r") as reqs:
 		deps = reqs.readlines()
 	for dep in deps:

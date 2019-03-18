@@ -15,14 +15,13 @@
 ### Bot
 - Hangs out in the voice chat, plays music from YouTube, SoundCloud, etc. through [youtube-dl](https://github.com/rg3/youtube-dl/commit/f7560859a3e25ccaa74123428d42f821299a2bed).
 - Responds to guild messages with custom user-defined responses.
-- Currently only works on Windows and Linux; Mac support is coming soon!
 
 ### Google Assistant Action
 - Google Assistant intent for asking which members of a Discord guild are online.
 
 ## Installation
 - [Create a Discord bot account and invite it to your server](https://discordpy.readthedocs.io/en/rewrite/discord.html).
-- `cd` to the project directory, and run the installer script `python3 install.py`.
+- `cd` to the project directory, and run the installer script `python3 install.py` (Mac users should run 'install.sh').
 - Note: The bot's dependencies require that you use Python 3.6!
 - The bot's command prefix defaults to `.`. This can be configured to suit your guild's needs.
 - Note: Some low-level dependencies such as `ffmpeg` may not be pip-able on your system. You'll need to install these dependencies yourself. 

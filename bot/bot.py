@@ -10,11 +10,12 @@ import inspect
 from discord.ext.commands import Command, Paginator
 
 class NewHelpFormatter(commands.HelpFormatter):
+	"""
+	Much of the code in the following functions has been taken from https://github.com/Rapptz/discord.py and modified to suit the purposes of this bot.
+	"""
 
 	def get_max_alias_length(self):
 		"""Returns the longest list of aliases possible for formatting purposes.
-		
-		Most of this code is lifted directly from format() in formatter.py (found in https://github.com/Rapptz/discord.py). The only reason this code has been copy-pasted is because the original method did most of what was needed already; it simply needed to be slightly tweaked for my purposes.
 		"""
 		max_len = 0
 		
@@ -27,7 +28,6 @@ class NewHelpFormatter(commands.HelpFormatter):
 		if self.is_bot():
 			data = sorted(self.filter_command_list(), key=category)
 			for category, commands in itertools.groupby(data, key=category):
-				# there simply is no prettier way of doing this.
 				commands = list(commands)
 				if len(commands) > 0:
 					for name, command in commands:
@@ -39,8 +39,6 @@ class NewHelpFormatter(commands.HelpFormatter):
 
 	def _add_subcommands_to_page(self, max_width, max_alias_width, commands):
 		"""An overridden function that changes up the formatting of commands that are to be added to a paginator.
-		
-		Most of this code is lifted directly from _add_subcommands_to_page() in formatter.py (found in https://github.com/Rapptz/discord.py). The only reason this code has been copy-pasted is because the original method did most of what was needed already; it simply needed to be slightly tweaked for my purposes.
 		"""
 		for name, command in commands:
 			if name in command.aliases:
@@ -59,8 +57,6 @@ class NewHelpFormatter(commands.HelpFormatter):
 
 	def format(self):
 		"""An overridden function that adds a few little aesthetic changes to the default help command.
-		
-		Most of this code is lifted directly from format() in formatter.py (found in https://github.com/Rapptz/discord.py). The only reason this code has been copy-pasted is because the original method did most of what was needed already; it simply needed to be slightly tweaked for my purposes.
 		"""
 		self._paginator = Paginator()
 		
