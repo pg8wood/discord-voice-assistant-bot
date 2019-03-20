@@ -21,8 +21,8 @@
 - Google Assistant intent for asking which members of a Discord guild are online.
 
 <p align="center">
-	<img src="./docs/discord-screenshot.jpeg" width=200px />
-	<img src="./docs/google-assistant-screenshot.png" width=200px />
+	<img src="https://github.com/pg8wood/discord-voice-assistant-bot/blob/master/docs/discord-screenshot.jpeg" width=200px />
+	<img src="https://github.com/pg8wood/discord-voice-assistant-bot/blob/master/docs/google-assistant-screenshot.PNG" width=200px />
 </p>
 
 ## Installation
