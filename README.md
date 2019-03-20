@@ -49,7 +49,7 @@ Note: The video tutorial states to use the Google Drive API; use the Google Shee
 ## Usage 
 
 ### Vanilla bot
-Run `python3 bot/bot_service.py` to run the Discord bot without any fancy Google Assistant functionality.
+Run `python3 bot/bot_service.py` (Mac users should run `bot/bot_service.sh`) to run the Discord bot without any fancy Google Assistant functionality.
 
 ### Google Assistant mode
 Run the Sanic server with `python3 bot/index.py`. This will run the web server at http://localhost:8000. 
