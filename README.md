@@ -27,7 +27,8 @@
 
 ## Installation
 - [Create a Discord bot account and invite it to your server](https://discordpy.readthedocs.io/en/rewrite/discord.html).
-- `cd` to the project directory, and run the installer script `./install.sh`.
+- `cd` to the project directory, and run the installer script `python3 install.py` (Mac users should run 'install.sh').
+- Note: The bot's dependencies require that you use Python 3.6!
 - The bot's command prefix defaults to `.`. This can be configured to suit your guild's needs.
 - Note: Some low-level dependencies such as `ffmpeg` may not be pip-able on your system. You'll need to install these dependencies yourself. 
 
@@ -41,12 +42,14 @@ The bot uses Google Sheets as a shared database of custom responses. This Sheet 
 
 Create a new Sheet and configure a service account for the bot [following this tutorial](https://youtu.be/vISRn5qFrkM). If you wish, share the link with your guild's members to allow them to add their own flavor to the bot. 
 
+Note: The video tutorial states to use the Google Drive API; use the Google Sheets API instead. All other steps are the same.
+
 <br />
 
 ## Usage 
 
 ### Vanilla bot
-Run `bot/bot_service.sh` to run the Discord bot without any fancy Google Assistant functionality.
+Run `python3 bot/bot_service.py` (Mac users should run `bot/bot_service.sh`) to run the Discord bot without any fancy Google Assistant functionality.
 
 ### Google Assistant mode
 Run the Sanic server with `python3 bot/index.py`. This will run the web server at http://localhost:8000. 
@@ -55,6 +58,8 @@ If you're hosting the bot elsewhere, run the server the way you're used to. You 
 
 Type `<command_prefix> help` to see what the bot can do!
 
-
 ## Roadmap
 - More bot features. Got an idea? Open an issue! 
+
+## Credit
+- Some of the code in bot/bot.py was taken from [discord.py](https://github.com/Rapptz/discord.py), as some modifications to the default help message required that the default methods be overridden, and as the original code was quite close to what was required already it made sense to copy said code and modify it as necessary in the overridden methods.
