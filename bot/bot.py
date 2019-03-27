@@ -46,6 +46,11 @@ async def on_ready():
         command_channel_id = str(sheets_client.get_command_channel_id(server_id=server.id))
         command_channel = server.get_channel(command_channel_id)
 
+        # Check last 10 messages and prevent the bot from spamming the channel if the bot was restarted recently
+        async for message in bot.logs_from(command_channel, limit=10):
+            if success_string in message.content:
+                await bot.delete_message(message)
+
         await bot.send_message(command_channel, success_string)
 
 
