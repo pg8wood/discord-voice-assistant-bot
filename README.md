@@ -37,7 +37,6 @@
 If you want to use Google Assistant features, [follow the Dialogflow setup instructions](https://developers.google.com/actions/dialogflow/project-agent). Set the fulfillment URL to point to your hosted `index.py`. 
 	
 - If you need free web hosting, you host your web service locally and expose a port to the web using a tool like [Serveo](https://serveo.net/).
-- 
 
 ### Custom Bot Responses
 The bot uses Google Sheets as a shared database of custom responses. This Sheet can be edited on-the-fly to setup custom bot text or audio responses to text typed in the Discord channels. 
