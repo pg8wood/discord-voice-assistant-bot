@@ -104,7 +104,10 @@ async def ping():
 
 @bot.command(pass_context=True, aliases=["hostname", "owner"])
 async def host(ctx):
-    await bot.say("You'll want to talk to %s@%s" % (getpass.getuser(), socket.gethostname()))
+    """See who's running the bot so you know who to blame."""
+    bot_owner = (await bot.application_info()).owner.name
+    await bot.say("%s owns %s. `%s@%s` is currently hosting the bot." %
+                  (bot_owner, bot.user.name, getpass.getuser(), socket.gethostname()))
 
 
 @bot.command(pass_context=True, aliases=["kill", "ded", "die"])
