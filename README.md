@@ -13,9 +13,9 @@
 <br />
 
 ## Features
-### Bot
+### Discord Bot
 - Hangs out in the voice chat, plays music from YouTube, SoundCloud, etc. through [youtube-dl](https://github.com/rg3/youtube-dl/commit/f7560859a3e25ccaa74123428d42f821299a2bed).
-- Responds to guild messages with custom user-defined responses, available through an easily-accessible Google Sheets link.
+- Responds to guild messages with custom user-defined responses available through an easily-accessible Google Sheets link.
 
 ### Google Assistant Action
 - Google Assistant intent for asking which members of a Discord guild are online.
@@ -27,7 +27,8 @@
 
 ## Installation
 - [Create a Discord bot account and invite it to your server](https://discordpy.readthedocs.io/en/rewrite/discord.html).
-- `cd` to the project directory, and run the installer script `python3 install.py` (Mac users should run 'install.sh').
+- `cd` to the project directory.
+- Run the installation script. Linux & Mac: `install.sh` Windows: `python3 install.py`
 - Note: The bot's dependencies require that you use Python 3.6!
 - The bot's command prefix defaults to `.`. This can be configured to suit your guild's needs.
 - Note: Some low-level dependencies such as `ffmpeg` may not be pip-able on your system. You'll need to install these dependencies yourself. 
@@ -36,6 +37,7 @@
 If you want to use Google Assistant features, [follow the Dialogflow setup instructions](https://developers.google.com/actions/dialogflow/project-agent). Set the fulfillment URL to point to your hosted `index.py`. 
 	
 - If you need free web hosting, you host your web service locally and expose a port to the web using a tool like [Serveo](https://serveo.net/).
+- 
 
 ### Custom Bot Responses
 The bot uses Google Sheets as a shared database of custom responses. This Sheet can be edited on-the-fly to setup custom bot text or audio responses to text typed in the Discord channels. 
@@ -48,11 +50,13 @@ Note: The video tutorial states to use the Google Drive API; use the Google Shee
 
 ## Usage 
 
-### Vanilla bot
-Run `python3 bot/bot_service.py` (Mac users should run `bot/bot_service.sh`) to run the Discord bot without any fancy Google Assistant functionality.
+### Regular bot
+The bot can be run without any fancy Google Assistant functionality.
+
+Linux & Mac: `bot_service.sh` Windows: `python3 bot_service.py`
 
 ### Google Assistant mode
-Run the Sanic server with `python3 bot/index.py`. This will run the web server at http://localhost:8000. 
+Run the Sanic server with `python3 bot/index.py`. This will run the web server at [http://localhost:8000](http://localhost:8000). 
 
 If you're hosting the bot elsewhere, run the server the way you're used to. You may need to edit the configuration in `index.py`. 
 
@@ -61,5 +65,6 @@ Type `<command_prefix> help` to see what the bot can do!
 ## Roadmap
 - More bot features. Got an idea? Open an issue! 
 
-## Credit
-- Some of the code in bot/bot.py was taken from [discord.py](https://github.com/Rapptz/discord.py), as some modifications to the default help message required that the default methods be overridden, and as the original code was quite close to what was required already it made sense to copy said code and modify it as necessary in the overridden methods.
+## Attribution
+- Powered by [discord.py](https://github.com/Rapptz/discord.py).
+- Formatting for the `help` command is modified from the example provided by [discord.py](https://github.com/Rapptz/discord.py).
