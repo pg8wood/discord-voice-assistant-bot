@@ -46,8 +46,8 @@ async def on_ready():
         command_channel_id = str(sheets_client.get_command_channel_id(server_id=server.id))
         command_channel = server.get_channel(command_channel_id)
 
-        # Check last 10 messages and prevent the bot from spamming the channel if the bot was restarted recently
-        async for message in bot.logs_from(command_channel, limit=10):
+        # Check last few messages and prevent the bot from spamming the channel if the bot was restarted recently
+        async for message in bot.logs_from(command_channel, limit=5):
             if success_string in message.content:
                 await bot.delete_message(message)
 
@@ -84,7 +84,7 @@ async def on_message(message):
         out" and catching errors (from their docs). Instead, we'll limit which media sites are supported here to avoid 
         catching errors frequently as control flow since this is both slow and an anti-pattern.
         """
-        supported_audio_sites = ("youtube", "soundcloud")
+        supported_audio_sites = sheets_client.get_supported_audio_sites()
         for site in supported_audio_sites:
             if site in custom_response:  # ♫ Audio response!
                 await music_client.audio_response(message, custom_response)
