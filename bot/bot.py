@@ -5,6 +5,8 @@ from threading import Thread
 from help_formatter import NewHelpFormatter
 import os
 import signal
+import socket
+import getpass
 
 
 new_help_formatter = NewHelpFormatter()
@@ -93,6 +95,11 @@ async def on_message(message):
 async def ping():
     """Ping me and see what happens ;)"""
     await bot.say("yo yo yo")
+
+
+@bot.command(pass_context=True, aliases=["hostname", "owner"])
+async def host(ctx):
+    await bot.say("You'll want to talk to %s@%s" % (getpass.getuser(), socket.gethostname()))
 
 
 @bot.command(pass_context=True, aliases=["kill", "ded", "die"])
