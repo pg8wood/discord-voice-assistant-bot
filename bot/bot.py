@@ -117,7 +117,7 @@ async def shutdown(ctx):
     bot_owner = (await bot.application_info()).owner
     await bot.send_message(ctx.message.channel, bot_owner.mention + ", I don't feel so good...")
     print("%s killed the bot" % ctx.message.author.name)
-    exit(0)
+    os._exit(0)
 
 
 @bot.command(pass_context=True, aliases=["toot", "doot"])
