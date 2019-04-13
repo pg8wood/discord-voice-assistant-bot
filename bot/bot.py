@@ -114,7 +114,8 @@ async def host(ctx):
 async def shutdown(ctx):
     """Kill switch. Use this if the bot gains sentience. You CANNOT restart the bot after using this command."""
 
-    await bot.send_message(ctx.message.channel, "I'll remember this, " + ctx.message.author.mention)
+    bot_owner = (await bot.application_info()).owner
+    await bot.send_message(ctx.message.channel, bot_owner.mention + ", I don't feel so good...")
     print("%s killed the bot" % ctx.message.author.name)
     exit(0)
 
