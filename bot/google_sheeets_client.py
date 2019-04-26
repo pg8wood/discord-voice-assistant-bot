@@ -17,6 +17,7 @@ class GoogleSheetsClient:
         scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
         credentials = ServiceAccountCredentials.from_json_keyfile_name("./secret/google_sheets_secret.json", scope)
         client = gspread.authorize(credentials)
+        client.login()
         master_sheet = client.open("Discord Assistant Bot")
 
         self.permissions_sheet = master_sheet.worksheet("Permissions")
