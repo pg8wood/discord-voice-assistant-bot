@@ -148,6 +148,6 @@ async def get_online_users():
             if voice_channel not in voice_channel_dict:
                 voice_channel_dict[voice_channel] = []
 
-            voice_channel_dict[voice_channel].append(member.name)
+            voice_channel_dict[voice_channel].append(member.nick if member.nick is not None else member.name)
 
     return voice_channel_dict
