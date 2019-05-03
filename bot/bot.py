@@ -7,10 +7,21 @@ import os
 import signal
 import socket
 import getpass
+import sys
+from enum import Enum
 
 
 new_help_formatter = NewHelpFormatter()
 new_help_formatter.width = 80
+
+
+# Configure environment
+class Environment(Enum):
+    DEV = 0
+    PROD = 1
+
+
+env = Environment.DEV if "dev" in sys.argv else Environment.PROD
 
 bot = commands.Bot(command_prefix=".", formatter=new_help_formatter,
                    description="yo yo yo\n\nHere's what I can do, fam:")
@@ -39,6 +50,9 @@ thread.start()
 async def on_ready():
     success_string = "Success! %s is online!" % bot.user.name
     print(success_string)
+
+    if env == Environment.DEV:
+        return
 
     # Send a message to each server's command channel notifying users that the bot is ready to accept commands
     servers = bot.servers

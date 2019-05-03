@@ -54,6 +54,9 @@ The bot can be run without any fancy Google Assistant functionality.
 
 Linux & Mac: `bot_service.sh` Windows: `python3 bot_service.py`
 
+_Optional Arguments_:
+dev - supress announcing the bot's online status 
+
 ### Google Assistant mode
 Run the Sanic server with `python3 bot/index.py`. This will run the web server at [http://localhost:8000](http://localhost:8000). 
 
