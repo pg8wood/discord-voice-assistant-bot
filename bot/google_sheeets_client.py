@@ -15,10 +15,10 @@ class GoogleSheetsClient:
 
     def refresh_records(self):
         scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-        credentials = ServiceAccountCredentials.from_json_keyfile_name("./secret/google_sheets_secret.json", scope)
-        client = gspread.authorize(credentials)
-        client.login()
-        master_sheet = client.open("Discord Assistant Bot")
+        self.credentials = ServiceAccountCredentials.from_json_keyfile_name("./secret/google_sheets_secret.json", scope)
+        self.client = gspread.authorize(self.credentials)
+        self.client.login()
+        master_sheet = self.client.open("Discord Assistant Bot")
 
         self.permissions_sheet = master_sheet.worksheet("Permissions")
         self.custom_response_sheet = master_sheet.worksheet("Custom Responses")
@@ -29,6 +29,7 @@ class GoogleSheetsClient:
         self.custom_response_records = self.custom_response_sheet.get_all_records()
 
     def get_command_channel_id(self, server_id):
+        self.client.login()
         for entry in self.permissions:
             if str(entry["server_id"]) == server_id:
                 return entry["command_channel_id"]
@@ -37,6 +38,7 @@ class GoogleSheetsClient:
         return self.permissions_sheet.col_values(self.music_services_column)
 
     def get_custom_response(self, text):
+        self.client.login()
         for entry in self.custom_response_records:
             trigger_phrases = str(entry["trigger_phrases"]).split(', ')
 
@@ -45,6 +47,7 @@ class GoogleSheetsClient:
                     return entry["response"]
 
     def is_command_channel(self, text_channel, server_id):
+        self.client.login()
         for entry in self.permissions:
             if str(entry["server_id"]) == server_id and entry["command_channel_name"] == text_channel:
                 return True
